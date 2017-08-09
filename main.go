@@ -13,6 +13,6 @@ func main()  {
 
 func HelloWorld()  {
 	status, version := openssl.Status()
-	fmt.Println("status", status)
-	fmt.Println("version",version)
+	fmt.Println("status: ", status)
+	fmt.Println("version: ",version)
 }
