@@ -25,7 +25,7 @@ To run it without docker, you must have a working golang compiler installed with
 ```bash
     # clone this repository in your $GOPATH
     # setup your system
-    $ ./scripts/setup.sh
+    $ sudo ./scripts/setup.sh
     # export required environment variables
     $ source srcipts/env.sh
     # run the hello world program

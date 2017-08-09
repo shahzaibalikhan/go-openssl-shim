@@ -1,11 +1,9 @@
-// #cgo pkg-config: openssl
 package main
 
 import (
 	"openssl"
 	"fmt"
 )
-
 
 func main()  {
 	HelloWorld()
