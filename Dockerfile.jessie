@@ -1,0 +1,20 @@
+FROM golang:1.8.3-jessie
+
+ADD vendor/openssl-fips-2.0.14 /openssl-fips-2.0.14
+ADD vendor/openssl-1.0.2k /openssl-1.0.2k
+
+RUN cd /openssl-fips-2.0.14 && ./config && make && make install
+RUN cd /openssl-1.0.2k && ./config fips && make depend && make && make install
+
+ENV PKG_CONFIG_PATH "/usr/local/ssl/lib/pkgconfig"
+ENV CC "/usr/local/ssl/fips-2.0/bin/fipsld"
+ENV FIPSLD_CC "gcc"
+
+RUN mkdir -p /go/src/openssl /go/src/go-shim
+
+ADD vendor/openssl-fips-2.0.14/go/openssl /go/src/openssl
+ADD main.go /go/src/go-shim
+
+WORKDIR /go/src/go-shim
+
+CMD ["/bin/bash"]
