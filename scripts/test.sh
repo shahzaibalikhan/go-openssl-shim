@@ -1,3 +1,5 @@
+#! /bin/bash
+
 declare -a distros=("alpine" "jessie" "stretch" "trusty" "xenial")
 declare -a builds=()
 
