@@ -1,7 +1,7 @@
 package openssl
 
 // #cgo pkg-config: openssl
-// #cgo LDFLAGS: -ldl
+// #cgo LDFLAGS: -lcrypto -ldl
 // #cgo CFLAGS: -std=c99
 // #include <openssl/err.h>
 // #include <openssl/crypto.h>
