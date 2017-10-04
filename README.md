@@ -31,3 +31,35 @@ To run it without docker, you must have a working golang compiler installed with
     # run the hello world program
     $ go run main.go
 ```
+
+### Note
+OpenSSL has a method called `FIPS_mode_set()` that we invoke before execution to enter FIPS mode of operation, if the FIPS Object Module successfully enters FIPS mode, the function will return that non-zero value and a power-up self-test is performed automatically with its call. These self-tests can also be optionally invoked at any time by the `FIPS_selftest()` call in `C` code.
+
+Its being done in `openssl` package as follows:
+```go
+package openssl
+
+// #cgo pkg-config: openssl
+// #cgo LDFLAGS: -lcrypto -ldl
+// #cgo CFLAGS: -std=c99
+// #include <openssl/err.h>
+// #include <openssl/crypto.h>
+// #include <stdlib.h>
+// extern int FIPS_init(void);
+// extern void schedule_thread_cleanup(void);
+import "C"
+import (
+	"log"
+	"runtime"
+	"strings"
+)
+
+func init() {
+	runtime.LockOSThread()
+	defer runtime.UnlockOSThread()
+	if C.FIPS_init() != 1 {
+		log.Fatal(GetError())
+	}
+}
+```
+Here `C.FIPS_init()` is a function that wraps over OpenSSL's `FIPS_mode_set()` which is being called in `init` function, so whenever `openssl` package is included anywhere, it automatically initiates the FIPS mode thus resulting in running all the self-tests.  
