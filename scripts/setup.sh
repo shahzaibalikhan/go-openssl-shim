@@ -7,11 +7,11 @@ if [ "$EUID" -ne 0 ]
   exit 1
 fi
 
-if [ -x "$(command -v openssl)" ]
+if [ -z "$(command -v openssl)" ]
     then echo "openssl is already installed, removing it..." && apt-get remove --purge openssl
 fi
 
-if [ -x "$(command -v go)" ]
+if [ -z "$(command -v go)" ]
     then echo "go is required, aborting..."; exit 1
 fi
 
